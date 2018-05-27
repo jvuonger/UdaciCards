@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import DeckList from './components/DeckList';
 import Deck from './components/Deck';
 import AddDeck from './components/AddDeck';
+import DeckQuiz from './components/DeckQuiz'
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -59,5 +60,8 @@ const MainNavigator = createStackNavigator({
         backgroundColor: purple,
       }
     }
+  },
+  DeckQuiz: {
+    screen: DeckQuiz
   }
 })

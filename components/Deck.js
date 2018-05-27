@@ -1,14 +1,27 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from 'react-native'
-import { white, black } from '../utils/colors'
+import { white, black, red } from '../utils/colors'
+import { deleteDeck } from '../utils/api'
+
 class Deck extends Component {
 
   _onPressAddCard = () => {
     console.log('Add Card')
   }
 
-  _onPressStartQuiz = () => {
-    console.log('Start Quiz')
+  _onPressStartQuiz = (deck) => {
+    this.props.navigation.navigate(
+      'DeckQuiz',
+      {
+        deck: deck 
+      }
+    )
+  }
+
+  _onPressDeleteDeck = (deck) => {
+    console.log('Delete Deck')
+    deleteDeck(deck.key)
+    this.props.navigation.goBack()
   }
 
   render() {
@@ -23,13 +36,16 @@ class Deck extends Component {
           onPress={this._onPressAddCard}
           title="Add Card"
           color={black}
-          accessibilityLabel="Learn more about this purple button"
         />
         <Button
-          onPress={this._onPressStartQuiz}
+          onPress={() => this._onPressStartQuiz(deck)}
           title="Start Quiz"
           color={white}
-          accessibilityLabel="Learn more about this purple button"
+        />
+        <Button
+          onPress={() => this._onPressDeleteDeck(deck)}
+          title="Delete Deck"
+          color={red}
         />
       </View>
     )

@@ -1,7 +1,10 @@
-export function listFormattedData(obj) {
+export function listFormattedData(results) {
+  let obj = JSON.parse(results)
+
   let dataArray = []
   for (const [key, value] of Object.entries(obj)) {
     dataArray.push({key,...value})
   }
+
   return dataArray
 }

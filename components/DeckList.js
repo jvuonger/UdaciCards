@@ -2,9 +2,35 @@ import React, { Component } from 'react'
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import { init_card_data } from '../utils/_cards'
 import { listFormattedData } from '../utils/helpers'
+import { getDecks } from '../utils/api'
 
 class DeckList extends Component {
-  data = listFormattedData(init_card_data)
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      decks: []
+    }
+  }
+
+  componentDidMount() {   
+    this._sub = this.props.navigation.addListener(
+      'didFocus',
+      this._fetchDecksOnFocus
+    );
+  }
+
+  componentWillUnmount() {
+    this._sub.remove();
+  }
+
+  _fetchDecksOnFocus = () => {
+    getDecks().then( decks => {
+      this.setState({
+        decks
+      })
+    })
+  }
 
   _onPress = (item) => {
     this.props.navigation.navigate(
@@ -26,7 +52,7 @@ class DeckList extends Component {
     return (
       <View style={styles.container}>
         <FlatList 
-          data={this.data}
+          data={this.state.decks}
           renderItem={this.renderItem}
         />
       </View>
