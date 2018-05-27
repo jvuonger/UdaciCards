@@ -30,6 +30,7 @@ class AddDeck extends Component {
   }
 
   render() {
+    console.log(this.props.navigation.state.params)
     return (
       <View>
         <Text>Add Deck</Text>

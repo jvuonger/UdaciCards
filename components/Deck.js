@@ -5,8 +5,13 @@ import { deleteDeck } from '../utils/api'
 
 class Deck extends Component {
 
-  _onPressAddCard = () => {
-    console.log('Add Card')
+  _onPressAddCard = (deck) => {
+    this.props.navigation.navigate(
+      'AddCard',
+      {
+        deck: deck 
+      }
+    )
   }
 
   _onPressStartQuiz = (deck) => {
@@ -33,7 +38,7 @@ class Deck extends Component {
         <Text>{deck.key}</Text>
         <Text>{deck.questions.length} cards</Text>
         <Button
-          onPress={this._onPressAddCard}
+          onPress={() => this._onPressAddCard(deck)}
           title="Add Card"
           color={black}
         />
