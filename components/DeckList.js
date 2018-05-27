@@ -1,24 +1,30 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, StyleSheet } from 'react-native'
-import { init_card_data, listFormattedData } from '../utils/_cards'
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native'
+import { init_card_data } from '../utils/_cards'
+import { listFormattedData } from '../utils/helpers'
 
 class DeckList extends Component {
   data = listFormattedData(init_card_data)
 
+  _onPress = (item) => {
+    this.props.navigation.navigate(
+      'Deck',
+      {deck: item}
+    )
+  }
+
   renderItem = ({item, separators}) => {
-    console.log(separators)
     return (
-      <View style={styles.deck}>
+      <TouchableOpacity onPress={() => this._onPress(item)} style={styles.deck}>
         <Text style={styles.deckTitle}>{item.title}</Text>
         <Text style={styles.deckCardCount}>{item.questions.length} cards</Text>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Testing</Text>
         <FlatList 
           data={this.data}
           renderItem={this.renderItem}
@@ -40,12 +46,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   deckTitle : {
-    fontSize: 24,
+    fontSize: 28,
     textAlign: 'center',
   },
   deckCardCount : {
-    fontSize: 12,
+    fontSize: 16,
+    marginTop: 10,
     textAlign: 'center',
+    color: '#444'
   }
 })
 
