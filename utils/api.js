@@ -7,8 +7,12 @@ export function getDecks() {
     .then(results => listFormattedData(results))
 }
 
-export function getDeck() {
-  
+export function getDeck(deckKey) {
+  return AsyncStorage.getItem(CARD_STORAGE_KEY)
+    .then(results => {
+      let decks = JSON.parse(results)
+      return decks[deckKey]
+    })
 }
 
 export function saveDeckTitle(title) {
@@ -27,6 +31,9 @@ export function saveDeckTitle(title) {
 }
 
 export function addCardToDeck(deckKey, question, answer) {
+  console.log('Add Card to Deck')
+  console.log(question)
+  console.log(answer)
   return AsyncStorage.getItem(CARD_STORAGE_KEY)
     .then(results => {
       decks = JSON.parse(results)

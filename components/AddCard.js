@@ -20,7 +20,7 @@ class AddCard extends Component {
       this.state.question,
       this.state.answer
     )
-    
+
     this.reset()
     this.toHome()
   }
@@ -45,13 +45,13 @@ class AddCard extends Component {
         <TextInput
           style={{height: 40}}
           placeholder="Question"
-          onChangeText={(title) => this.setState({title})}
+          onChangeText={(question) => this.setState({question})}
           value={this.state.question}
         />
         <TextInput
           style={{height: 40}}
           placeholder="Answer"
-          onChangeText={(title) => this.setState({title})}
+          onChangeText={(answer) => this.setState({answer})}
           value={this.state.answer}
         />
         <Button 

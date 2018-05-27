@@ -1,9 +1,27 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from 'react-native'
 import { white, black, red } from '../utils/colors'
-import { deleteDeck } from '../utils/api'
+import { getDeck, deleteDeck } from '../utils/api'
 
 class Deck extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      deck : {}
+    }
+  }
+
+  componentDidMount() {
+    const { deck } = this.props.navigation.state.params
+
+    getDeck(deck.title)
+      .then((deck) => {
+        this.setState({
+          deck
+        })
+      })
+  }
 
   _onPressAddCard = (deck) => {
     this.props.navigation.navigate(
@@ -24,19 +42,20 @@ class Deck extends Component {
   }
 
   _onPressDeleteDeck = (deck) => {
-    console.log('Delete Deck')
+
     deleteDeck(deck.key)
     this.props.navigation.goBack()
   }
 
   render() {
-    const { navigation } = this.props
-    const { deck } = navigation.state.params
+    const { deck } = this.state
 
     return (
       <View>
-        <Text>{deck.key}</Text>
-        <Text>{deck.questions.length} cards</Text>
+        {Object.keys(deck).length !== 0 && <View>
+          <Text>{deck.key}</Text>
+          <Text>{deck.questions.length} cards</Text>
+        </View>}
         <Button
           onPress={() => this._onPressAddCard(deck)}
           title="Add Card"
