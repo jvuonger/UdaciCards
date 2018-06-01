@@ -5,6 +5,7 @@ import { listFormattedData } from '../utils/helpers'
 import { getDecks } from '../utils/api'
 
 class DeckList extends Component {
+
   constructor(props) {
     super(props)
 

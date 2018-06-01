@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native'
 import { white, black, red } from '../utils/colors'
 import { getDeck, deleteDeck } from '../utils/api'
 
 class Deck extends Component {
+
+  static navigationOptions = ({navigation}) => {
+    return {title: navigation.getParam('deck').title}
+  }
 
   constructor(props) {
     super(props)
@@ -51,29 +55,74 @@ class Deck extends Component {
     const { deck } = this.state
 
     return (
-      <View>
+      <View style={styles.container}>
         {Object.keys(deck).length !== 0 && <View>
-          <Text>{deck.key}</Text>
-          <Text>{deck.questions.length} cards</Text>
+          <Text style={styles.deckTitle}>{deck.key}</Text>
+          <Text style={styles.deckCardCount}>{deck.questions.length} cards</Text>
         </View>}
-        <Button
+        
+        <TouchableOpacity
           onPress={() => this._onPressAddCard(deck)}
           title="Add Card"
-          color={black}
-        />
-        <Button
+          style={styles.addCardButton}
+        >
+          <Text>Add Card</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => this._onPressStartQuiz(deck)}
-          title="Start Quiz"
-          color={white}
-        />
+          style={styles.startQuizButton}
+        >
+          <Text style={{color: white}}>Start Quiz</Text>
+        </TouchableOpacity>
+
         <Button
           onPress={() => this._onPressDeleteDeck(deck)}
           title="Delete Deck"
           color={red}
         />
+        
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  deckTitle : {
+    fontSize: 28,
+    textAlign: 'center',
+  },
+  deckCardCount : {
+    fontSize: 16,
+    marginTop: 10,
+    marginBottom: 120,
+    textAlign: 'center',
+    color: '#444'
+  },
+  addCardButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 1,
+    padding: 15,
+    width: 200,
+    backgroundColor: white,
+    marginBottom: 20
+  },
+  startQuizButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 1,
+    padding: 15,
+    width: 200,
+    backgroundColor: black
+  }
+})
 
 export default Deck
