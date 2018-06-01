@@ -18,9 +18,24 @@ class Deck extends Component {
 
   componentDidMount() {
     const { deck } = this.props.navigation.state.params
+    this._fetchDeckOnFocus(deck)
+    this.sub = this.props.navigation.addListener(
+      'didFocus',
+      () => {
+        this._fetchDeckOnFocus(deck)
+      }
+    );
+    
+  }
 
+  componentWillUnmount() {
+    this.sub.remove();
+  }
+
+  _fetchDeckOnFocus = (deck) => {
+    console.log('fetchdeck')
     getDeck(deck.title)
-      .then((deck) => {
+      .then( deck => {
         this.setState({
           deck
         })
@@ -46,17 +61,17 @@ class Deck extends Component {
   }
 
   _onPressDeleteDeck = (deck) => {
-
     deleteDeck(deck.key)
     this.props.navigation.goBack()
   }
+  
 
   render() {
     const { deck } = this.state
 
     return (
       <View style={styles.container}>
-        {Object.keys(deck).length !== 0 && <View>
+        { (typeof deck !== "undefined") && Object.keys(deck).length !== 0 && <View>
           <Text style={styles.deckTitle}>{deck.key}</Text>
           <Text style={styles.deckCardCount}>{deck.questions.length} cards</Text>
         </View>}
