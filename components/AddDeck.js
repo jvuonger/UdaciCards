@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, Button } from 'react-native'
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import { saveDeckTitle } from '../utils/api'
 import { NavigationActions } from 'react-navigation'
+import { white, black } from '../utils/colors'
 
 class AddDeck extends Component {
   constructor(props) {
@@ -32,21 +33,52 @@ class AddDeck extends Component {
   render() {
    
     return (
-      <View>
-        <Text>Add Deck</Text>
+      <View style={styles.container}>
         <TextInput
-          style={{height: 40}}
-          placeholder="Set Deck Title"
+          style={styles.inputs}
+          placeholder="Deck Title"
           onChangeText={(title) => this.setState({title})}
           value={this.state.title}
         />
-        <Button 
-          onPress={this.submit} 
-          title="Create Deck"
-        /> 
+        <TouchableOpacity
+          onPress={this.submit}
+          style={styles.submitButton}
+        >
+          <Text style={{color: white}}>Create Deck</Text>
+        </TouchableOpacity>
       </View>
     )
   }
 }
+
+let windowWidth = Dimensions.get('window').width - 20
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  inputs: {
+    width: windowWidth,
+    height: 40,
+    borderWidth: 1,
+    backgroundColor: white,
+    borderRadius: 4,
+    borderWidth: 1,
+    marginBottom: 20
+  },
+  submitButton: {
+    marginTop: 200,
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderWidth: 1,
+    padding: 15,
+    width: 200,
+    backgroundColor: black
+  }
+})
 
 export default AddDeck

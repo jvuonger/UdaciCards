@@ -49,23 +49,28 @@ const BottomTabNavigatorConfig = {
 
 const Tabs = createBottomTabNavigator(RouteConfigs, BottomTabNavigatorConfig);
 
+const navOptions = {
+  headerTintColor: white,
+  headerStyle: {
+    backgroundColor: purple,
+  }
+}
+
 const MainNavigator = createStackNavigator({
   Home: {
     screen: Tabs,
+    navigationOptions: navOptions
   },
   Deck: {
     screen: Deck,
-    navigationOptions: {
-      headerTintColor: white,
-      headerStyle: {
-        backgroundColor: purple,
-      }
-    }
+    navigationOptions: navOptions
   },
   DeckQuiz: {
-    screen: DeckQuiz
+    screen: DeckQuiz,
+    navigationOptions: navOptions
   },
   AddCard: {
-    screen: AddCard
+    screen: AddCard,
+    navigationOptions: navOptions
   }
 })
