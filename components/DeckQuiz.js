@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { white, black, red, green } from '../utils/colors'
+import { white, black, red, green, blue } from '../utils/colors'
 
 class DeckQuiz extends Component {
 
@@ -17,12 +17,17 @@ class DeckQuiz extends Component {
   }
 
   componentDidMount() {
+    this._resetQuiz()
+  }
+
+  _resetQuiz = () => {
     const { deck } = this.props.navigation.state.params
 
     this.setState({
       questions: deck.questions,
       currentCard: 1,
-      totalCards: deck.questions.length
+      totalCards: deck.questions.length,
+      numCorrect: 0
     })
   }
 
@@ -87,6 +92,19 @@ class DeckQuiz extends Component {
           <Text style={styles.quizScoreText}>
             You scored a {this._getPercentageCorrect()}%
           </Text>
+          <TouchableOpacity
+            onPress={this._resetQuiz}
+            style={styles.restartQuizButton}
+          >
+            <Text style={{color:white}}>Restart Quiz</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.goBack() }
+            style={styles.backToDeckButton}
+          >
+            <Text style={{color:white}}>Back to Deck</Text>
+          </TouchableOpacity>
+
         </View>
       )
     }
@@ -157,10 +175,27 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center'
   },
+  restartQuizButton: {
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    width: 200,
+    backgroundColor: blue,
+    marginBottom: 20
+  },
+  backToDeckButton: {
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    width: 200,
+    backgroundColor: black,
+    marginBottom: 20
+  },
   quizScoreText: {
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: 20
   },
   noCardsText: {
     fontSize: 20,
