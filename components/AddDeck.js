@@ -34,6 +34,9 @@ class AddDeck extends Component {
    
     return (
       <View style={styles.container}>
+        <Text style={styles.newDeckText}>
+          What is the title of your new deck?
+        </Text>
         <TextInput
           style={styles.inputs}
           placeholder="Deck Title"
@@ -59,6 +62,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignSelf: 'stretch',
     alignItems: 'center'
+  },
+  newDeckText: {
+    fontSize: 28,
+    textAlign: 'center',
+    marginBottom: 20
   },
   inputs: {
     width: windowWidth,

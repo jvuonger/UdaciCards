@@ -1,18 +1,206 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { white, black, red, green } from '../utils/colors'
 
 class DeckQuiz extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      questions: [],
+      currentCard: 0,
+      totalCards: 0,
+      isShowingQuestion: true,
+      numCorrect: 0
+    }
+  }
+
+  componentDidMount() {
+    const { deck } = this.props.navigation.state.params
+
+    this.setState({
+      questions: deck.questions,
+      currentCard: 1,
+      totalCards: deck.questions.length
+    })
+  }
+
+  _toggleQuestionOrAnswer = () => {
+    this.setState((prevState) => {
+      return {isShowingQuestion: !prevState.isShowingQuestion}
+    })
+  }
+
+  _onPressCorrect = () => {
+    this.setState((prevState) => {
+      return {
+        currentCard: ++prevState.currentCard,
+        numCorrect: ++prevState.numCorrect 
+      }   
+    })
+  }
+
+  _onPressIncorrect = () => {
+    this.setState((prevState) => {
+      return {
+        currentCard: ++prevState.currentCard
+      }   
+    })
+  }
+
+  _getPercentageCorrect = () => {
+    const floatNumCorrect = parseFloat(this.state.numCorrect) / parseFloat(this.state.totalCards)
+    const percentageCorrect = floatNumCorrect.toFixed(4) * 100
+    return percentageCorrect
+  }
+
+  _getCardQuestion = (currentCard) => {
+    if(currentCard === 0 || typeof this.state.questions[currentCard - 1] === 'undefined') {
+      return null
+    }
+    return this.state.questions[currentCard - 1]
+  }
+
   render() {
 
     const { navigation } = this.props
     const { deck } = navigation.state.params
+    const { questions, currentCard, totalCards, isShowingQuestion, numCorrect } = this.state
+    const currentQuestion = this._getCardQuestion(currentCard)
+
+    // No Cards in Deck
+    if(totalCards === 0) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.noCardsText}>
+            Sorry, you cannot take a quiz because there are no cards in the deck.
+          </Text>
+        </View>
+      )
+    }
+
+    // End of Quiz, return results
+    if(currentCard > totalCards) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.quizScoreText}>
+            You scored a {this._getPercentageCorrect()}%
+          </Text>
+        </View>
+      )
+    }
 
     return (
-      <View>
-        <Text>Deck Quiz</Text>
+      <View style={styles.container}>
+        <Text style={styles.cardCountText}>
+          {currentCard} / {totalCards}
+        </Text>
+
+        <View style={styles.middleContainer}>
+          <Text style={styles.contentText}>
+            { isShowingQuestion   
+              ? currentQuestion.question
+              : currentQuestion.answer
+            }
+          </Text>
+
+          <TouchableOpacity
+            onPress={this._toggleQuestionOrAnswer}
+            style={styles.answerButton}
+          >
+            <Text style={{color: red}}>
+              { isShowingQuestion   
+                ? 'Answer'
+                : 'Question'
+              }
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity
+            onPress={this._onPressCorrect}
+            style={styles.correctButton}
+          >
+            <Text style={{color: white}}>Correct</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={this._onPressIncorrect}
+            style={styles.incorrectButton}
+          >
+            <Text style={{color: white}}>Incorrect</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  middleContainer: {
+    flex: 2,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  bottomContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center'
+  },
+  quizScoreText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  noCardsText: {
+    fontSize: 20,
+    padding: 20,
+    textAlign: 'center',
+  },
+  cardCountText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    padding: 10,
+    alignSelf: 'flex-start'
+  },
+  contentText: {
+    fontSize: 28
+  },
+  answerButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    width: 200,
+    marginTop: 20
+  },
+  correctButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    width: 200,
+    backgroundColor: green,
+    marginBottom: 20
+  },
+  incorrectButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: 4,
+    padding: 15,
+    width: 200,
+    backgroundColor: red
+  }
+})
 
 export default DeckQuiz

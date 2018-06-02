@@ -33,7 +33,6 @@ class Deck extends Component {
   }
 
   _fetchDeckOnFocus = (deck) => {
-    console.log('fetchdeck')
     getDeck(deck.title)
       .then( deck => {
         this.setState({
@@ -136,7 +135,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     width: 200,
-    backgroundColor: black
+    backgroundColor: black,
+    marginBottom: 20
   }
 })
 
