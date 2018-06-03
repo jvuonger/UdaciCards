@@ -9,3 +9,6 @@ The UdaciCards project allows users to study collections of flashcards. The app 
 * The back of the card should display the answer.
 * Users should be able to quiz themselves on a specific deck and receive a score once they're done.
 * Users should receive a notification to remind themselves to study if they haven't already for that day.
+
+##App Testing##
+* App testing in iOS Simulator

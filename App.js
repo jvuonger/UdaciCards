@@ -9,8 +9,21 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { white, purple } from './utils/colors'
+import { setLocalNotification, dateIsToday } from './utils/helpers'
+import { getLastQuizDate } from './utils/api'
+
+import { AsyncStorage } from 'react-native'
 
 export default class App extends React.Component {
+  componentDidMount() {
+    // Set Local Notification if Last Quiz Date is not today
+    getLastQuizDate().then(lastQuizDate => {
+      if(lastQuizDate === null || !dateIsToday(lastQuizDate)) {
+        setLocalNotification()
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>

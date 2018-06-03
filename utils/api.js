@@ -1,6 +1,25 @@
 import { AsyncStorage } from 'react-native'
 import { CARD_STORAGE_KEY } from './_cards'
-import { listFormattedData } from '../utils/helpers'
+import { listFormattedData, LAST_QUIZ_DATE_KEY } from '../utils/helpers'
+
+// Save the last time this user took a quiz
+export function logTodaysQuizDate() {
+  const todaysDate = new Date()
+  todaysDate.setHours(0,0,0,0)
+  AsyncStorage.setItem(LAST_QUIZ_DATE_KEY, JSON.stringify({'lastQuizDate': todaysDate}))
+}
+
+export function getLastQuizDate() {
+  return AsyncStorage.getItem(LAST_QUIZ_DATE_KEY)
+    .then(result => {
+      let data = JSON.parse(result)
+      if(data && data !== 'null' && data.hasOwnProperty('lastQuizDate')){
+        return new Date(Date.parse(data.lastQuizDate))
+      } else {
+        return null
+      }
+    })
+}
 
 export function getDecks() {
   return AsyncStorage.getItem(CARD_STORAGE_KEY)

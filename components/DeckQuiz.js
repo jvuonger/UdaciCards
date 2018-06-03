@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, Animated } from 'react-native'
 import { white, black, red, green, blue } from '../utils/colors'
+import { logTodaysQuizDate } from '../utils/api'
+import { clearLocalNotification } from '../utils/helpers'
 
 class DeckQuiz extends Component {
 
   constructor(props) {
     super(props)
-
+    
     this.state = {
       questions: [],
       currentCard: 0,
@@ -87,6 +89,10 @@ class DeckQuiz extends Component {
 
     // End of Quiz, return results
     if(currentCard > totalCards) {
+
+      logTodaysQuizDate()
+      clearLocalNotification()
+
       return (
         <View style={styles.container}>
           <Text style={styles.quizScoreText}>
@@ -156,12 +162,19 @@ class DeckQuiz extends Component {
   }
 }
 
+
 const styles = StyleSheet.create({
+  cardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'stretch',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignSelf: 'stretch',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   middleContainer: {
     flex: 2,
