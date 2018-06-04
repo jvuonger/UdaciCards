@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Dimensions
 import { saveDeckTitle } from '../utils/api'
 import { NavigationActions } from 'react-navigation'
 import { white, black } from '../utils/colors'
+import { getDeck } from '../utils/api'
 
 class AddDeck extends Component {
   constructor(props) {
@@ -23,11 +24,11 @@ class AddDeck extends Component {
       title: ''
     })
     
-    this.toHome()
-  }
-
-  toHome = () => {
     this.props.navigation.goBack()
+
+    getDeck(this.state.title)
+      .then(deck => this.props.navigation.navigate('Deck', {deck}))
+
   }
 
   render() {
